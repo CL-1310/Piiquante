@@ -2,11 +2,17 @@ const express = require('express');
 
 const mongoose = require('mongoose');
 
+const dotenv = require('dotenv').config()
+
 const userRoutes = require("./routes/userRoutes");
+
+const sauceRoutes = require("./routes/sauceRoutes")
 
 const app = express();
 
-const Sauce = require('./models/Sauce');
+const helmet = require("helmet");
+
+const path = require("path")
 
 mongoose.connect('mongodb+srv://CL-1310:ytCkTcz5PdFetc@cluster0.ughiqby.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -22,9 +28,13 @@ app.use((req, res, next) => {
   });
 
 app.use(express.json())
+app.use("/images", express.static(path.join(__dirname,"images")))
 
 app.use("/api/auth", userRoutes)
-//app.use('/api/sauces', sauceRoutes);
+app.use('/api/sauces', sauceRoutes);
 
+app.use(helmet());
+
+console.log(process.env)
 
 module.exports = app;
