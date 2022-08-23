@@ -2,7 +2,9 @@ const express = require('express');
 
 const mongoose = require('mongoose');
 
-const dotenv = require('dotenv').config()
+require('dotenv').config()
+
+console.log(process.env.MY_ID)
 
 const userRoutes = require("./routes/userRoutes");
 
@@ -34,7 +36,5 @@ app.use("/api/auth", userRoutes)
 app.use('/api/sauces', sauceRoutes);
 
 app.use(helmet());
-
-console.log(process.env)
 
 module.exports = app;

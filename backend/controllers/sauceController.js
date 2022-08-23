@@ -3,9 +3,7 @@ const Sauce = require('../models/Sauce');
 exports.createSauce = (req, res, next) => {
   console.log(req.body);
   const sauceObject = JSON.parse(req.body.sauce)
-  //console.log(sauceObject);
   console.log("Création Sauce");
-  //console.log(req.body.sauce.userId);
   const sauce = new Sauce({
     userId: sauceObject.userId,
     name: sauceObject.name,
@@ -99,11 +97,16 @@ exports.getOneSauce = (req, res, next) => {
         if(req.body.like === 1){
           sauce.usersLiked.push(req.body.userId)
         }else if(req.body.like === -1){
-// Même chose qu'au-dessus mais pour le usersDisliked
+          sauce.usersDisliked.push(req.body.userId)
         }else if(req.body.like === 0){
-// utiliser la fonction .includes pour voir si dans le tableau il y a l'ID user (if)
-// récupérer l'index du tableau avec .indexOf() à mettre dans une variable puis faire un .splice()
-// faire la même chose pour chaque tableau
+          if(sauce.usersLiked.includes(req.body.userId)){
+            let likedIndex = sauce.usersLiked.indexOf(req.body.userId)
+            sauce.usersLiked.splice(likedIndex)
+          }
+          if(sauce.usersDisliked.includes(req.body.userId)){
+            let dislikedIndex = sauce.usersDisliked.indexOf(req.body.userId)
+            sauce.usersDisliked.splice(dislikedIndex)
+          }
         }
       }
     ).catch(
