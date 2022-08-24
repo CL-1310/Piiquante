@@ -108,6 +108,13 @@ exports.getOneSauce = (req, res, next) => {
             sauce.usersDisliked.splice(dislikedIndex)
           }
         }
+        sauce.likes = sauce.usersLiked.length
+
+        sauce.dislikes = sauce.usersDisliked.length
+
+        sauce.save()
+        .then((sauce) => res.status(200).json({ message: "Mise à jour des likes et des dislikes"}))
+        .catch((error) => res.status(400).json(error))
       }
     ).catch(
       (error) => {
